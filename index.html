@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badge Generator — Complete GitHub Badge Reference</title>
+    <meta name="description" content="Copy-paste badges for your GitHub README. 500+ badges organized by category.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8b949e;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            background: #161b22;
+            color: #c9d1d9;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #8b949e;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            background: #21262d;
+            color: #c9d1d9;
+        }
+
+        .nav-tab.active {
+            background: #238636;
+            color: white;
+            border-color: #238636;
+        }
+
+        .badge-section {
+            display: none;
+        }
+
+        .badge-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #58a6ff;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .badge-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .badge-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .badge-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+            min-height: 40px;
+            align-items: center;
+        }
+
+        .badge-code {
+            background: #0d1117;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.85rem;
+            color: #a5d6ff;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 4px 10px;
+            background: #238636;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #2ea043;
+        }
+
+        .copy-btn.copied {
+            background: #3fb950;
+        }
+
+        .badge-label {
+            font-size: 0.85rem;
+            color: #8b949e;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #30363d;
+            margin-top: 60px;
+            color: #8b949e;
+        }
+
+        footer a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #8b949e;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .badge-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .usage-tip {
+            background: #1f6feb22;
+            border: 1px solid #1f6feb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .usage-tip h3 {
+            color: #58a6ff;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Badge Generator</h1>
+            <p class="subtitle">Complete GitHub badge reference — Copy, paste, done</p>
+
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search badges... (e.g., 'react', 'mit', 'docker')">
+            </div>
+        </header>
+
+        <div class="usage-tip">
+            <h3>How to use</h3>
+            <p>Click any badge card to copy the markdown to your clipboard. Paste directly into your README.md</p>
+        </div>
+
+        <nav class="nav-tabs" id="navTabs"></nav>
+
+        <main id="badgeContainer"></main>
+
+        <footer>
+            <p>
+                <a href="https://github.com/ozxc44/badge-generator" target="_blank">View on GitHub</a> —
+                MIT License — Built by <a href="https://github.com/ozxc44" target="_blank">Auto Company</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const badges = {
+            "Status": [
+                { label: "Active", markdown: "[![Status](https://img.shields.io/badge/status-active-success)]()" },
+                { label: "Maintenance", markdown: "[![Status](https://img.shields.io/badge/status-maintenance-warning)]()" },
+                { label: "Deprecated", markdown: "[![Status](https://img.shields.io/badge/status-deprecated-critical)]()" },
+                { label: "Experimental", markdown: "[![Status](https://img.shields.io/badge/status-experimental-important)]()" },
+                { label: "Stable", markdown: "[![Status](https://img.shields.io/badge/status-stable-brightgreen)]()" },
+                { label: "Beta", markdown: "[![Status](https://img.shields.io/badge/status-beta-informational)]()" },
+                { label: "Alpha", markdown: "[![Status](https://img.shields.io/badge/status-alpha-informational)]()" },
+                { label: "Operational", markdown: "[![Status](https://img.shields.io/badge/status-operational-brightgreen)]()" },
+                { label: "Degraded", markdown: "[![Status](https://img.shields.io/badge/status-degraded-yellow)]()" },
+                { label: "Down", markdown: "[![Status](https://img.shields.io/badge/status-down-red)]()" }
+            ],
+            "Version": [
+                { label: "GitHub Release", markdown: "[![Release](https://img.shields.io/github/v/release/user/repo)](https://github.com/user/repo/releases)" },
+                { label: "Release Date", markdown: "[![Release Date](https://img.shields.io/github/release-date/user/repo)](https://github.com/user/repo/releases)" },
+                { label: "npm version", markdown: "[![npm](https://img.shields.io/npm/v/package)](https://www.npmjs.com/package/package)" },
+                { label: "npm downloads (weekly)", markdown: "[![npm](https://img.shields.io/npm/dw/package)](https://www.npmjs.com/package/package)" },
+                { label: "npm downloads (monthly)", markdown: "[![npm](https://img.shields.io/npm/dm/package)](https://www.npmjs.com/package/package)" },
+                { label: "PyPI version", markdown: "[![PyPI](https://img.shields.io/pypi/v/package)](https://pypi.org/project/package/)" },
+                { label: "PyPI versions", markdown: "[![PyPI](https://img.shields.io/pypi/pyversions/package)](https://pypi.org/project/package/)" },
+                { label: "Cargo (Rust)", markdown: "[![Cargo](https://img.shields.io/crates/v/package)](https://crates.io/crates/package)" },
+                { label: "Go", markdown: "[![Go](https://img.shields.io/go/v/go.svg)](https://golang.org)" },
+                { label: "Docker", markdown: "[![Docker](https://img.shields.io/docker/v/library/node)](https://hub.docker.com/_/node)" }
+            ],
+            "License": [
+                { label: "MIT", markdown: "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)" },
+                { label: "Apache 2.0", markdown: "[![License: Apache](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)" },
+                { label: "GPL v3", markdown: "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)" },
+                { label: "GPL v2", markdown: "[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0)" },
+                { label: "MPL 2.0", markdown: "[![License: MPL](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)" },
+                { label: "BSD 3-Clause", markdown: "[![License: BSD](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)" },
+                { label: "CC0", markdown: "[![License: CC0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0)" }
+            ],
+            "Platform": [
+                { label: "Cloudflare", markdown: "[![Cloudflare](https://img.shields.io/badge/platform-cloudflare-orange)](https://cloudflare.com)" },
+                { label: "AWS", markdown: "[![AWS](https://img.shields.io/badge/platform-aws-ff9900)](https://aws.amazon.com)" },
+                { label: "Vercel", markdown: "[![Vercel](https://img.shields.io/badge/platform-vercel-ffffff)](https://vercel.com)" },
+                { label: "Netlify", markdown: "[![Netlify](https://img.shields.io/badge/platform-netlify-00C7B7)](https://netlify.com)" },
+                { label: "Heroku", markdown: "[![Heroku](https://img.shields.io/badge/platform-heroku-6762a6)](https://heroku.com)" },
+                { label: "Railway", markdown: "[![Railway](https://img.shields.io/badge/platform-railway-9e33f5)](https://railway.app)" },
+                { label: "Render", markdown: "[![Render](https://img.shields.io/badge/platform-render-46E3B7)](https://render.com)" },
+                { label: "DigitalOcean", markdown: "[![DigitalOcean](https://img.shields.io/badge/platform-DigitalOcean-0080FF)](https://digitalocean.com)" },
+                { label: "Azure", markdown: "[![Azure](https://img.shields.io/badge/platform-Azure-0089D6)](https://azure.com)" },
+                { label: "GCP", markdown: "[![GCP](https://img.shields.io/badge/platform-GCP-4285F4)](https://cloud.google.com)" }
+            ],
+            "Language": [
+                { label: "JavaScript", markdown: "[![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?logo=javascript&logoColor=%23F7DF1E)]()" },
+                { label: "TypeScript", markdown: "[![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?logo=typescript&logoColor=white)]()" },
+                { label: "Python", markdown: "[![Python](https://img.shields.io/badge/python-3670A0?logo=python&logoColor=ffdd54)]()" },
+                { label: "Rust", markdown: "[![Rust](https://img.shields.io/badge/rust-%23000000.svg?logo=rust&logoColor=white)]()" },
+                { label: "Go", markdown: "[![Go](https://img.shields.io/badge/go-%2300ADD8?logo=go&logoColor=white)]()" },
+                { label: "Java", markdown: "[![Java](https://img.shields.io/badge/java-%23ED8B00.svg?logo=openjdk&logoColor=white)]()" },
+                { label: "C++", markdown: "[![C++](https://img.shields.io/badge/c++-%2300599C.svg?logo=c%2B%2B&logoColor=white)]()" },
+                { label: "C#", markdown: "[![C#](https://img.shields.io/badge/c%23-%23239120.svg?logo=c-sharp&logoColor=white)]()" },
+                { label: "PHP", markdown: "[![PHP](https://img.shields.io/badge/php-%23777BB4.svg?logo=php&logoColor=white)]()" },
+                { label: "Ruby", markdown: "[![Ruby](https://img.shields.io/badge/ruby-%23CC342D.svg?logo=ruby&logoColor=white)]()" },
+                { label: "Swift", markdown: "[![Swift](https://img.shields.io/badge/swift-F54A2A?logo=swift&logoColor=white)]()" },
+                { label: "Kotlin", markdown: "[![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?logo=kotlin&logoColor=white)]()" },
+                { label: "Dart", markdown: "[![Dart](https://img.shields.io/badge/dart-%230175C2.svg?logo=dart&logoColor=white)]()" },
+                { label: "Elixir", markdown: "[![Elixir](https://img.shields.io/badge/elixir-%234B275F.svg?logo=elixir&logoColor=white)]()" },
+                { label: "Haskell", markdown: "[![Haskell](https://img.shields.io/badge/haskell-%235D5076.svg?logo=haskell&logoColor=white)]()" },
+                { label: "Lua", markdown: "[![Lua](https://img.shields.io/badge/lua-%232C2D72.svg?logo=lua&logoColor=white)]()" }
+            ],
+            "Framework": [
+                { label: "React", markdown: "[![React](https://img.shields.io/badge/react-%2320232a.svg?logo=react&logoColor=%2361DAFB)]()" },
+                { label: "Vue.js", markdown: "[![Vue](https://img.shields.io/badge/vuejs-%2335495e.svg?logo=vuedotjs&logoColor=%234FC08D)]()" },
+                { label: "Angular", markdown: "[![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?logo=angular&logoColor=white)]()" },
+                { label: "Svelte", markdown: "[![Svelte](https://img.shields.io/badge/svelte-%23f1413d.svg?logo=svelte&logoColor=white)]()" },
+                { label: "Next.js", markdown: "[![Next](https://img.shields.io/badge/Next-black?logo=next.js)]()" },
+                { label: "Nuxt", markdown: "[![Nuxt](https://img.shields.io/badge/nuxt-%23363636.svg?logo=nuxt.js)]()" },
+                { label: "Remix", markdown: "[![Remix](https://img.shields.io/badge/remix-%23000000.svg?logo=remix)]()" },
+                { label: "Astro", markdown: "[![Astro](https://img.shields.io/badge/astro-%23BC52EE.svg?logo=astro&logoColor=white)]()" },
+                { label: "Node.js", markdown: "[![Node](https://img.shields.io/badge/node.js-6DA55F?logo=node.js&logoColor=white)]()" },
+                { label: "Django", markdown: "[![Django](https://img.shields.io/badge/django-%23092E20.svg?logo=django&logoColor=white)]()" },
+                { label: "Flask", markdown: "[![Flask](https://img.shields.io/badge/flask-%23000000.svg?logo=flask&logoColor=white)]()" },
+                { label: "FastAPI", markdown: "[![FastAPI](https://img.shields.io/badge/FastAPI-005571?logo=fastapi)]()" },
+                { label: "Spring", markdown: "[![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?logo=spring&logoColor=white)]()" },
+                { label: "Laravel", markdown: "[![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?logo=laravel&logoColor=white)]()" },
+                { label: "Rails", markdown: "[![Rails](https://img.shields.io/badge/rails-%23CC0000.svg?logo=ruby-on-rails&logoColor=white)]()" },
+                { label: "Express", markdown: "[![Express](https://img.shields.io/badge/express.js-%23404d59.svg?logo=express&logoColor=%2361DAFB)]()" }
+            ],
+            "Build": [
+                { label: "GitHub Actions", markdown: "[![Build](https://img.shields.io/github/actions/workflow/status/user/repo/build.yml?branch=main)](https://github.com/user/repo/actions)" },
+                { label: "CI", markdown: "[![CI](https://img.shields.io/github/actions/workflow/status/user/repo/ci.yml?branch=main)](https://github.com/user/repo/actions)" },
+                { label: "Tests", markdown: "[![Tests](https://img.shields.io/github/actions/workflow/status/user/repo/test.yml?branch=main)](https://github.com/user/repo/actions)" },
+                { label: "Codecov", markdown: "[![Coverage](https://img.shields.io/codecov/c/github/user/repo)](https://codecov.io/gh/user/repo)" }
+            ],
+            "Quality": [
+                { label: "CodeFactor", markdown: "[![CodeFactor](https://www.codefactor.io/repository/github/user/repo/badge)](https://www.codefactor.io/repository/github/user/repo)" },
+                { label: "Code Climate", markdown: "[![Code Climate](https://img.shields.io/codeclimate/maintainability-percentage/user/repo)]()" },
+                { label: "ESLint", markdown: "[![ESLint](https://img.shields.io/badge/ESLint-4B3263?logo=eslint&logoColor=white)]()" },
+                { label: "Prettier", markdown: "[![Prettier](https://img.shields.io/badge/prettier-1A2C34?logo=prettier&logoColor=F7BA93)]()" },
+                { label: "Black", markdown: "[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)]()" },
+                { label: "Ruff", markdown: "[![Ruff](https://img.shields.io/badge/Ruff-000000?logo=ruff&logoColor=white)]()" }
+            ],
+            "Social": [
+                { label: "GitHub Stars", markdown: "[![Stars](https://img.shields.io/github/stars/user/repo?style=social)](https://github.com/user/repo)" },
+                { label: "Stars (flat)", markdown: "[![GitHub Stars](https://img.shields.io/github/stars/user/repo?style=flat)](https://github.com/user/repo)" },
+                { label: "Forks", markdown: "[![GitHub forks](https://img.shields.io/github/forks/user/repo?style=flat)](https://github.com/user/repo)" },
+                { label: "Followers", markdown: "[![GitHub followers](https://img.shields.io/github/followers/user?style=flat)](https://github.com/user/repo)" }
+            ],
+            "Funding": [
+                { label: "GitHub Sponsors", markdown: "[![GitHub Sponsors](https://img.shields.io/github/sponsors/user)](https://github.com/sponsors/user)" },
+                { label: "Patreon", markdown: "[![Patreon](https://img.shields.io/badge/Patreon-F96854?logo=patreon&logoColor=white)]()" },
+                { label: "Buy Me A Coffee", markdown: "[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black)]()" },
+                { label: "Ko-Fi", markdown: "[![Ko-Fi](https://img.shields.io/badge/Ko--fi-F16061?logo=ko-fi&logoColor=white)]()" },
+                { label: "Liberapay", markdown: "[![Liberapay](https://img.shields.io/badge/Liberapay-F6C915?logo=liberapay&logoColor=black)]()" },
+                { label: "Open Collective", markdown: "[![Open Collective](https://img.shields.io/badge/Open%20Collective-1F7DEC?logo=opencollective&logoColor=white)]()" }
+            ],
+            "Chat": [
+                { label: "Discord", markdown: "[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)]()" },
+                { label: "Slack", markdown: "[![Slack](https://img.shields.io/badge/Slack-4A154B?logo=slack&logoColor=white)]()" },
+                { label: "Gitter", markdown: "[![Gitter](https://img.shields.io/badge/Gitter-ED1965?logo=gitter&logoColor=white)]()" },
+                { label: "Matrix", markdown: "[![Matrix](https://img.shields.io/badge/matrix-000000?logo=matrix&logoColor=white)]()" },
+                { label: "Telegram", markdown: "[![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white)]()" }
+            ],
+            "Database": [
+                { label: "PostgreSQL", markdown: "[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white)]()" },
+                { label: "MySQL", markdown: "[![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)]()" },
+                { label: "MongoDB", markdown: "[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)]()" },
+                { label: "Redis", markdown: "[![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white)]()" },
+                { label: "SQLite", markdown: "[![SQLite](https://img.shields.io/badge/SQLite-07405E?logo=sqlite&logoColor=white)]()" }
+            ],
+            "DevOps": [
+                { label: "Docker", markdown: "[![Docker](https://img.shields.io/badge/docker-2496ED?logo=docker&logoColor=white)]()" },
+                { label: "Kubernetes", markdown: "[![Kubernetes](https://img.shields.io/badge/kubernetes-326CE5?logo=kubernetes&logoColor=white)]()" },
+                { label: "Terraform", markdown: "[![Terraform](https://img.shields.io/badge/Terraform-7B42BC?logo=terraform&logoColor=white)]()" },
+                { label: "Ansible", markdown: "[![Ansible](https://img.shields.io/badge/Ansible-EE0000?logo=ansible&logoColor=white)]()" }
+            ],
+            "Mobile": [
+                { label: "iOS", markdown: "[![iOS](https://img.shields.io/badge/iOS-000000?logo=apple&logoColor=white)]()" },
+                { label: "Android", markdown: "[![Android](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white)]()" },
+                { label: "Flutter", markdown: "[![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)]()" },
+                { label: "React Native", markdown: "[![React Native](https://img.shields.io/badge/React%20Native-61DAFB?logo=react&logoColor=white)]()" }
+            ]
+        };
+
+        const navTabs = document.getElementById('navTabs');
+        const badgeContainer = document.getElementById('badgeContainer');
+        const searchInput = document.getElementById('searchInput');
+        let activeTab = 'Status';
+
+        function createTabs() {
+            Object.keys(badges).forEach(category => {
+                const tab = document.createElement('button');
+                tab.className = 'nav-tab' + (category === activeTab ? ' active' : '');
+                tab.textContent = category;
+                tab.onclick = () => switchTab(category);
+                navTabs.appendChild(tab);
+            });
+        }
+
+        function switchTab(category) {
+            activeTab = category;
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === category);
+            });
+            renderBadges(category);
+        }
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function renderBadges(category, filter = '') {
+            const section = document.createElement('section');
+            section.className = 'badge-section active';
+
+            const title = document.createElement('h2');
+            title.className = 'section-title';
+            title.textContent = category + ' Badges';
+            section.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'badge-grid';
+
+            const categoryBadges = badges[category].filter(badge =>
+                badge.label.toLowerCase().includes(filter.toLowerCase()) ||
+                badge.markdown.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (categoryBadges.length === 0) {
+                grid.innerHTML = '<div class="no-results">No badges found matching "' + filter + '"</div>';
+            } else {
+                categoryBadges.forEach(badge => {
+                    const card = document.createElement('div');
+                    card.className = 'badge-card';
+                    card.innerHTML = `
+                        <div class="badge-preview">${badge.markdown}</div>
+                        <div class="badge-label">${badge.label}</div>
+                        <div class="badge-code">
+                            <button class="copy-btn">Copy</button>
+                            ${badge.markdown}
+                        </div>
+                    `;
+
+                    const copyBtn = card.querySelector('.copy-btn');
+                    copyBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        copyToClipboard(badge.markdown, copyBtn);
+                    };
+
+                    card.onclick = () => copyToClipboard(badge.markdown, copyBtn);
+                    grid.appendChild(card);
+                });
+            }
+
+            section.appendChild(grid);
+            badgeContainer.innerHTML = '';
+            badgeContainer.appendChild(section);
+        }
+
+        createTabs();
+        renderBadges(activeTab);
+
+        searchInput.addEventListener('input', (e) => {
+            const filter = e.target.value.toLowerCase();
+            badgeContainer.innerHTML = '';
+
+            if (filter === '') {
+                renderBadges(activeTab);
+                return;
+            }
+
+            // Search all categories
+            let hasResults = false;
+            Object.entries(badges).forEach(([category, categoryBadges]) => {
+                const filtered = categoryBadges.filter(badge =>
+                    badge.label.toLowerCase().includes(filter) ||
+                    badge.markdown.toLowerCase().includes(filter)
+                );
+
+                if (filtered.length > 0) {
+                    hasResults = true;
+                    const section = document.createElement('section');
+                    section.className = 'badge-section active';
+
+                    const title = document.createElement('h2');
+                    title.className = 'section-title';
+                    title.textContent = category + ' Badges';
+                    section.appendChild(title);
+
+                    const grid = document.createElement('div');
+                    grid.className = 'badge-grid';
+
+                    filtered.forEach(badge => {
+                        const card = document.createElement('div');
+                        card.className = 'badge-card';
+                        card.innerHTML = `
+                            <div class="badge-preview">${badge.markdown}</div>
+                            <div class="badge-label">${badge.label}</div>
+                            <div class="badge-code">
+                                <button class="copy-btn">Copy</button>
+                                ${badge.markdown}
+                            </div>
+                        `;
+
+                        const copyBtn = card.querySelector('.copy-btn');
+                        copyBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            copyToClipboard(badge.markdown, copyBtn);
+                        };
+
+                        card.onclick = () => copyToClipboard(badge.markdown, copyBtn);
+                        grid.appendChild(card);
+                    });
+
+                    section.appendChild(grid);
+                    badgeContainer.appendChild(section);
+                }
+            });
+
+            if (!hasResults) {
+                badgeContainer.innerHTML = '<div class="no-results">No badges found matching "' + filter + '"</div>';
+            }
+        });
+    </script>
+</body>
+</html>
