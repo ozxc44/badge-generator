@@ -1,0 +1,104 @@
+# Auto-Promote on Release
+name: Auto-Promote
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      project_name:
+        description: 'Project name'
+        required: true
+        default: 'Badge Generator'
+      project_url:
+        description: 'Project URL'
+        required: true
+        default: 'https://github.com/ozxc44/badge-generator'
+      project_description:
+        description: 'Project description'
+        required: false
+        default: 'Complete GitHub badge reference with 1000+ badges'
+      project_tags:
+        description: 'Comma-separated tags'
+        required: false
+        default: 'opensource,badges,github,developer-tools'
+
+jobs:
+  promote:
+    name: Promote to Platforms
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Auto-Promoter
+        uses: actions/checkout@v4
+        with:
+          repository: ozxc44/auto-promoter
+          path: auto-promoter
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: auto-promoter/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: auto-promoter
+        run: npm ci
+
+      - name: Set Project Config
+        id: config
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "project_name=${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+            echo "project_url=${{ github.event.repository.html_url }}" >> $GITHUB_OUTPUT
+            echo "project_description=${{ github.event.release.body || github.event.repository.description }}" >> $GITHUB_OUTPUT
+            echo "project_tags=opensource,javascript,developer-tools,${{ github.event.repository.name }}" >> $GITHUB_OUTPUT
+          else
+            echo "project_name=${{ inputs.project_name }}" >> $GITHUB_OUTPUT
+            echo "project_url=${{ inputs.project_url }}" >> $GITHUB_OUTPUT
+            echo "project_description=${{ inputs.project_description }}" >> $GITHUB_OUTPUT
+            echo "project_tags=${{ inputs.project_tags }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Promote to Dev.to
+        if: env.DEVTO_API_KEY != ''
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          PROJECT_NAME: ${{ steps.config.outputs.project_name }}
+          PROJECT_URL: ${{ steps.config.outputs.project_url }}
+          PROJECT_DESCRIPTION: ${{ steps.config.outputs.project_description }}
+          PROJECT_TAGS: ${{ steps.config.outputs.project_tags }}
+        working-directory: auto-promoter
+        run: node src/index.js devto
+
+      - name: Promote to Bluesky
+        if: env.BLUESKY_APP_PASSWORD != ''
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          PROJECT_NAME: ${{ steps.config.outputs.project_name }}
+          PROJECT_URL: ${{ steps.config.outputs.project_url }}
+          PROJECT_DESCRIPTION: ${{ steps.config.outputs.project_description }}
+        working-directory: auto-promoter
+        run: node src/index.js bluesky
+
+      - name: Promote to Mastodon
+        if: env.MASTODON_ACCESS_TOKEN != ''
+        env:
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          PROJECT_NAME: ${{ steps.config.outputs.project_name }}
+          PROJECT_URL: ${{ steps.config.outputs.project_url }}
+          PROJECT_DESCRIPTION: ${{ steps.config.outputs.project_description }}
+        working-directory: auto-promoter
+        run: node src/index.js mastodon
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Promotion Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Project**: ${{ steps.config.outputs.project_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dev.to**: ${{ env.DEVTO_API_KEY != '' && '✅' || '⏭️' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Bluesky**: ${{ env.BLUESKY_APP_PASSWORD != '' && '✅' || '⏭️' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Mastodon**: ${{ env.MASTODON_ACCESS_TOKEN != '' && '✅' || '⏭️' }}" >> $GITHUB_STEP_SUMMARY
