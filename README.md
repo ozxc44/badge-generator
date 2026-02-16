@@ -2,8 +2,11 @@
 
 > The complete badge reference for your GitHub README. Copy, paste, done.
 
+[![Live Demo](https://img.shields.io/badge/live-demo-brightgreen)](https://ozxc44.github.io/badge-generator/)
 [![Stars](https://img.shields.io/github/stars/ozxc44/badge-generator?style=social)](https://github.com/ozxc44/badge-generator)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**Try it live:** [ozxc44.github.io/badge-generator](https://ozxc44.github.io/badge-generator/) — Interactive badge browser with search and click-to-copy.
 
 ## Why Badges?
 
